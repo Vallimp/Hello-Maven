@@ -1,0 +1,68 @@
+<Configuration name="ConfigTest" status="ERROR" monitorInterval="5">
+  <Appenders>
+
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%p] %m%n"/>
+    </Console>
+
+    <File name="MyFile" fileName="logs/logfile.log">
+      <PatternLayout>
+        <Pattern>%m%n</Pattern>
+      </PatternLayout>
+    </File>
+
+    <RollingFile name="RollingFileAppender" fileName="logs/app.log"
+      filePattern="logs/${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+        <PatternLayout>
+            <Pattern>[%p] %m%n</Pattern>
+        </PatternLayout>
+        <Policies>
+            <!-- A new file will be created as soon as the previous log file reached 50MB in size -->
+            <SizeBasedTriggeringPolicy size="50 MB" /> 
+        </Policies>
+        <DefaultRolloverStrategy max="20" /> <!-- Keep only the last 20 files. Files older than that will be removed -->
+    </RollingFile>
+
+    <!--
+    For JDBC appender configuration, you need to define a ConnectionSource, which can be either a JNDI 
+    Data Source or a custom ConnectionFactory. The logger uses the ConnectionSource to get JDBC connections, 
+    which is why it’s important to use a connection pool for better performance.
+    -->
+    <JDBC name="JDBCAppender" tableName="logs">
+        <DataSource jndiName="java:/comp/env/jdbc/LoggingDataSource" />
+        <Column name="date" isEventTimestamp="true" />
+        <Column name="logger" pattern="%logger" />
+        <Column name="level" pattern="%level" />
+        <Column name="message" pattern="%message" />
+        <Column name="exception" pattern="%ex{full}" />
+    </JDBC>
+
+    <!-- The following will try to log messages in DB and if it fails, uses the RollingFileAppender and if that also fails,
+     uses the Console appender -->
+    <Failover name="FailoverAppender" primary="JDBCAppender">
+      <Failovers>
+        <AppenderRef ref="RollingFileAppender" />
+        <AppenderRef ref="Console" />
+      </Failovers>
+    </Failover>
+
+  </Appenders>
+  <Loggers>
+    <Logger name="com.test1" level="debug" additivity="false">
+      <AppenderRef ref="RollingFileAppender"/>
+    </Logger>
+    <Logger name="com.test2" level="debug" additivity="false">
+      <AppenderRef ref="MyFile"/>
+    </Logger>
+    <Logger name="com.test3" level="error" additivity="false">
+      <AppenderRef ref="JDBCAppender"/>
+    </Logger>
+    <Logger name="com.test4" level="warn" additivity="false">
+      <AppenderRef ref="FailoverAppender"/>
+    </Logger>
+    
+    <Root level="error">
+      <AppenderRef ref="STDOUT"/>
+    </Root>
+  </Loggers>
+</Configuration>

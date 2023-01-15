@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2022-12-20T20:34:50 EST" name="Default suite" finished-at="2022-12-20T20:34:51 EST" duration-ms="850">
+    <groups>
+    </groups>
+    <test started-at="2022-12-20T20:34:50 EST" name="Default test" finished-at="2022-12-20T20:34:51 EST" duration-ms="850">
+      <class name="Logpackage.Logclass">
+        <test-method signature="TestLog()[pri:0, instance:Logpackage.Logclass@2525ff7e]" started-at="2022-12-20T20:34:50 EST" name="TestLog" finished-at="2022-12-20T20:34:51 EST" duration-ms="791" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- TestLog -->
+      </class> <!-- Logpackage.Logclass -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

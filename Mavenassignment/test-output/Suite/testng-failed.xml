@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [Suite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="Test(failed)">
+    <parameter name="author" value="Fred Gipson"/>
+    <parameter name="book" value="The old yeller"/>
+    <groups>
+      <run>
+        <exclude name="Sanity"/>
+      </run>
+    </groups>
+    <classes>
+      <class name="testngAnnotations.AnnotationImplements">
+        <methods>
+          <include name="beforemethod"/>
+          <include name="aftersuite"/>
+          <include name="beforeclass"/>
+          <include name="beforesuite"/>
+          <include name="aftermethod"/>
+          <include name="aftertest"/>
+          <include name="afterClass"/>
+          <include name="testparameter"/>
+          <include name="beforetest"/>
+        </methods>
+      </class> <!-- testngAnnotations.AnnotationImplements -->
+    </classes>
+  </test> <!-- Test(failed) -->
+</suite> <!-- Failed suite [Suite] -->
