@@ -1,6 +1,7 @@
 package Runner;
 
-import org.testng.annotations.DataProvider;
+/*import org.testng.annotations.DataProvider;
+
 
 import org.junit.runner.RunWith;
 import io.cucumber.junit.Cucumber;
@@ -25,4 +26,22 @@ public class Testrunner extends AbstractTestNGCucumberTests{
 		return super.scenarios();
 	}
 	
-	}
+	}*/
+
+
+import io.cucumber.junit.Cucumber;
+
+import io.cucumber.junit.CucumberOptions;
+import org.junit.runner.RunWith;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        features = "src/test/resources/features/programModule",
+        glue = {"com.api.hackathon.steps"},
+        monochrome = true,
+        plugin = { "pretty",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"
+                + "Jvm"}
+)
+public class Testrunner {
+}

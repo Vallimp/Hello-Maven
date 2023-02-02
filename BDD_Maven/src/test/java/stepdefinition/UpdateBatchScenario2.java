@@ -3,11 +3,15 @@ package stepdefinition;
 import io.restassured.RestAssured;
 
 
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured.*;
 import io.restassured.builder.RequestSpecBuilder;
+import org.json.simple.JSONObject;
+
+import java.util.HashMap;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -53,9 +57,20 @@ res = RestAssured.given().spec(req).log().all();
 @When ("Put request is made as parameters at Path {string}, {string}, {string}, {string}, {string},{string},{string} are modified")
 public void are_modified(String batchId, String batchName, String batchDescription, String batchStatus, String batchNoOfClasses, String programId, String programName)
 {
-response = (Response) res.body("{\"batchId\":\" "+batchId+"\",\"batchName\":\""+batchName+"\",\"batchDescription\": \" " +batchDescription+"\",\"batchStatus\": \" " +batchStatus+"\", \"batchNoOfClasses\":\" "+batchNoOfClasses+"\", \"programId\":\" "+programId+"\", \"programName\":\" "+programName+"\"}").when().get("/batches/788");
-response1 = (Response) res.body("{\"batchId\":\"     "+bId+"\",\"batchName\":\""+ bname + "\", \"batchDescription\": \"" + bdesc + "\",        \"batchStatus\": \" " +bstatus+     "\",\"batchNoOfClasses\": \" " +bNoOfClasses+"\", \"programId\": \" " +progId+ "\",           \"programName\":\" "          +progName+ "\"}").when().put("/batches/788");
+response = (Response) res.body("{\"batchId\":\" "+batchId+"\",\"batchName\":\""+batchName+"\",\"batchDescription\": \" " +batchDescription+"\",\"batchStatus\": \"" +batchStatus+"\", \"batchNoOfClasses\":\""+batchNoOfClasses+"\", \"programId\":\""+programId+"\", \"programName\":\" "+programName+"\"}").when().get("/batches/788");
+response1 = (Response) res.body("{\"batchId\":\"     "+bId+"\",\"batchName\":\""+ bname + "\", \"batchDescription\": \"" + bdesc + "\",        \"batchStatus\": \"" +bstatus+     "\",\"batchNoOfClasses\": \"" +bNoOfClasses+"\", \"programId\": \"" +progId+ "\",           \"programName\":\" "          +progName+ "\"}").when().put("/batches/788");
 
+HashMap<String, Object> dataBody = new HashMap<String, Object>();
+
+dataBody.put("BatchID", bId);
+dataBody.put("batchName", bname);
+dataBody.put("batchDescription", bdesc);
+dataBody.put("batchStatus", bstatus);
+dataBody.put("batchNoOfClasses", bNoOfClasses);
+dataBody.put("programId", progId);
+dataBody.put("programName", progName);
+response1 = req.when().body(JSONObject.toJSONString(dataBody)).put("/batches/788");
+System.out.println(response1.asString());
 }
 
 /*@Then("validate programId is present in response")
@@ -67,32 +82,23 @@ public void validate_program_id_is_present_in_response()
 @Then("Validate response status code")
 public void validate_response_status_code()
 {
-/*
-* Response response1 =
-* RestAssured.get("http://lms-backend-service.herokuapp.com/lms/batches/584");
-* int code = response.getStatusCode(); throw new
-* io.cucumber.java.PendingException();
-*/
-   
     System.out.println("The response code - " +response1.getStatusCode());
     Assert.assertEquals(response1.getStatusCode(),200);
 
-//Assert.assertEquals(response.getStatusCode(), 200);
-//Assert.assertEquals(response1.getStatusCode(), 200);
 }
 
 @Then("Validate {string}, {string}, {string}, {string}, {string},{string},{string}")
 public void validate(String batchId, String batchName, String batchDescription, String batchStatus, String batchNoOfClasses, String programId, String programName)
 {
-	System.out.println("The batch name in my response is "+ response1.asString());
 	 response1.then().
-	 assertThat().body("batchId" ,Matchers.equalTo(bId))
+	assertThat().body("batchId" ,Matchers.equalTo(bId))
 			     .body("batchName" ,Matchers.equalTo(bname))
 			     .body("batchDescription" ,Matchers.equalTo(bdesc))
 				 .body("batchStatus" ,Matchers.equalTo(bstatus))
 				 .body("batchNoOfClasses" ,Matchers.equalTo(bNoOfClasses))
 				 .body("programId" ,Matchers.equalTo(progId))
 				 .body("programName" ,Matchers.equalTo(progName)).log().all();
+	 
 }
 }
 

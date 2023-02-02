@@ -3,18 +3,11 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="weblocator.JuiceShop">
+      <class name="weblocator.OrangeHrm">
         <methods>
-          <include name="ChangeQuantity"/>
-          <include name="VerifyOrder"/>
-          <include name="CheckoutandAddress"/>
-          <include name="AddNewCard"/>
-          <include name="Login"/>
-          <include name="Logout"/>
-          <include name="CreateUser"/>
-          <include name="Addressselection"/>
+          <include name="OrangeHrmassignment"/>
         </methods>
-      </class> <!-- weblocator.JuiceShop -->
+      </class> <!-- weblocator.OrangeHrm -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
